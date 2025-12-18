@@ -1,0 +1,2 @@
+# palabros
+Detector de palabrotas
