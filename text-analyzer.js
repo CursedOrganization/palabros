@@ -1,62 +1,44 @@
 // Creado por Jacinto Aisa
 const template = document.createElement('template');
 template.innerHTML = `
-  <style>
-    .container {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      padding: 20px;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    .text-input {
-      width: 100%;
-      min-height: 200px;
-      padding: 12px;
-      font-size: 16px;
-      border: 2px solid #ccc;
-      border-radius: 4px;
-      resize: vertical;
-      box-sizing: border-box;
-      font-family: inherit;
-    }
+<style>
 
-    .stats {
-      display: flex;
-      gap: 20px;
-      font-size: 18px;
-    }
+</style>
 
-    label { font-weight: bold; }
-    span { color: #0066cc; margin-left: 8px; }
-  </style>
 
-  <div class="container">
-    <textarea class="text-input" placeholder="Paste or type your text here..."></textarea>
-    <div class="stats">
-      <label>Word Count: <span class="word-count">0</span></label>
-      <label>Letter Count: <span class="letter-count">0</span></label>
-    </div>
-  </div>
+    <div class="p-3">
+      <div class="form-floating mb-3">
+        <textarea class="form-control" placeholder="Leave a comment here" id="titleTextArea" style="height: 100px"></textarea>
+        <label for="titleTextArea">Introduzca la frase o palabra que desee comprobar</label>
+      </div>
+
+      <div class="d-flex gap-2">
+        <span class="badge bg-success">Word Count: <span class="word-count">0</span></span>
+        <span class="badge bg-secondary">Letter Count: <span class="letter-count">0</span></span>
+      </div>
+  </div
+
+
 `;
 
 class TextAnalyzer extends HTMLElement {
   static get observedAttributes() { return ['text']; }
-
+  
   constructor() {
     super();
     this._text = '';
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-
-    this.$textarea = this.shadowRoot.querySelector('.text-input');
+    
+    this.$textarea = this.shadowRoot.querySelector('.form-control');
     this.$wordCount = this.shadowRoot.querySelector('.word-count');
     this.$letterCount = this.shadowRoot.querySelector('.letter-count');
-
+    
     this._onInput = this._onInput.bind(this);
   }
-
+  
   connectedCallback() {
     if (this.hasAttribute('text')) {
       this.text = this.getAttribute('text');
@@ -65,17 +47,17 @@ class TextAnalyzer extends HTMLElement {
     // ensure initial counts are correct
     this._updateCounts();
   }
-
+  
   disconnectedCallback() {
     this.$textarea.removeEventListener('input', this._onInput);
   }
-
+  
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'text' && newValue !== oldValue) {
       this.text = newValue || '';
     }
   }
-
+  
   get text() { return this._text; }
   set text(value) {
     const normalized = value == null ? '' : String(value);
@@ -90,7 +72,7 @@ class TextAnalyzer extends HTMLElement {
       this.setAttribute('text', normalized);
     }
   }
-
+  
   _onInput(e) {
     this._text = e.target.value;
     // reflect attribute (keeps property/attr in sync)
@@ -100,7 +82,7 @@ class TextAnalyzer extends HTMLElement {
     this._updateCounts();
     this.dispatchEvent(new CustomEvent('text-change', { detail: { text: this._text } }));
   }
-
+  
   _updateCounts() {
     const text = this._text || '';
     const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
