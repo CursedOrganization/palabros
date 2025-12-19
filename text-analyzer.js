@@ -21,11 +21,6 @@ template.innerHTML = `
           <button type="submit" class="btn bg-success rounded-0">Comprobar</button
         </div>
       </div>
-
-   
-      
-        >
-      
       `;
 
 class TextAnalyzer extends HTMLElement {
