@@ -16,7 +16,7 @@ export class Palabros implements IPalabros {
         const palabrosEncontrados: string[] = [];
         // sacar palabros del texto 
         // replace(/[\u0300-\u036f]/g, '') elimina las tildes
-        const palabras: string[] = texto.replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z\s]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase().split(' ');
+        const palabras: string[] = texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z\s]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase().split(' ');
         // iterar el texto en busca de palabros
         for (const palabra of palabras) {
             const palabroEncontrado = this.PALABROS.find(p => p.palabro === palabra);
