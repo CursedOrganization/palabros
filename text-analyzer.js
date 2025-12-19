@@ -1,5 +1,3 @@
-import { RepositorioPalabrasService } from "./repositorioPalabrasService";
-
 // Creado por Jacinto Aisa
 const template = document.createElement('template');
 template.innerHTML = `
@@ -20,29 +18,27 @@ template.innerHTML = `
         </div>
 
         <div class="d-flex justify-content-end">
-          <button type="submit" class="btn bg-success rounded-0" id="botonComprobar">Comprobar</button
+          <button type="submit" class="btn bg-success rounded-0">Comprobar</button
         </div>
       </div>
       `;
 
 class TextAnalyzer extends HTMLElement {
   static get observedAttributes() { return ['text']; }
-
-  repositorioPalabrasService = RepositorioPalabrasService.getInstance();
-
+  
   constructor() {
     super();
     this._text = '';
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-
+    
     this.$textarea = this.shadowRoot.querySelector('.form-control');
     this.$wordCount = this.shadowRoot.querySelector('.word-count');
     this.$letterCount = this.shadowRoot.querySelector('.letter-count');
-
+    
     this._onInput = this._onInput.bind(this);
   }
-
+  
   connectedCallback() {
     if (this.hasAttribute('text')) {
       this.text = this.getAttribute('text');
@@ -51,29 +47,18 @@ class TextAnalyzer extends HTMLElement {
     // ensure initial counts are correct
     this._updateCounts();
   }
-
+  
   disconnectedCallback() {
     this.$textarea.removeEventListener('input', this._onInput);
   }
-
+  
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'text' && newValue !== oldValue) {
       this.text = newValue || '';
     }
   }
-
-  // POR MODIFICAR AÚN
-  async onFileUpload(event) {
-    const archivo = event.target.files[0];
-    if (!archivo) return;
-
-    const palabras = await this.repositorioPalabrasService.damePalabras(archivo);
-  }
-
-  // obtiene el valor del texto introducido
+  
   get text() { return this._text; }
-
-  // establece el valor del texto introducido
   set text(value) {
     const normalized = value == null ? '' : String(value);
     if (normalized === this._text) return;
@@ -87,7 +72,7 @@ class TextAnalyzer extends HTMLElement {
       this.setAttribute('text', normalized);
     }
   }
-
+  
   _onInput(e) {
     this._text = e.target.value;
     // reflect attribute (keeps property/attr in sync)
@@ -97,7 +82,7 @@ class TextAnalyzer extends HTMLElement {
     this._updateCounts();
     this.dispatchEvent(new CustomEvent('text-change', { detail: { text: this._text } }));
   }
-
+  
   _updateCounts() {
     const text = this._text || '';
     const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;

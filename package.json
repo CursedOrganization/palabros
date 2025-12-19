@@ -23,8 +23,5 @@
   "bugs": {
     "url": "https://github.com/CursedOrganization/palabros/issues"
   },
-  "homepage": "https://github.com/CursedOrganization/palabros#readme",
-  "dependencies": {
-    "mammoth": "^1.11.0"
-  }
+  "homepage": "https://github.com/CursedOrganization/palabros#readme"
 }
