@@ -2,26 +2,31 @@
 const template = document.createElement('template');
 template.innerHTML = `
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link rel="stylesheet" href="./styles.css">
 
-<style>
+  <style>
+    /* estilos internos opcionales */
+  </style>
 
-</style>
+      <div class="form my-3 text-white">
+        <label for="textArea" class="form-label">Introduzca el contenido que desee comprobar:</label>
+        <textarea class="form-control rounded-0 bg-dark text-light" id=textArea" style="min-height: 200px;"></textarea> 
+        
+        <div class="my-3 d-flex gap-2">
+          <span class="badge rounded-0 bg-info bg-opacity-50">Word Count: <span class="word-count">0</span></span>
+          <span class="badge rounded-0 bg-secondary">Letter Count: <span class="letter-count">0</span></span>
+        </div>
 
-
-    <div class="p-3">
-      <div class="form-floating mb-3">
-        <textarea class="form-control" placeholder="Leave a comment here" id="titleTextArea" style="height: 100px"></textarea>
-        <label for="titleTextArea">Introduzca la frase o palabra que desee comprobar</label>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn bg-success rounded-0">Comprobar</button
+        </div>
       </div>
 
-      <div class="d-flex gap-2">
-        <span class="badge bg-success">Word Count: <span class="word-count">0</span></span>
-        <span class="badge bg-secondary">Letter Count: <span class="letter-count">0</span></span>
-      </div>
-  </div
-
-
-`;
+   
+      
+        >
+      
+      `;
 
 class TextAnalyzer extends HTMLElement {
   static get observedAttributes() { return ['text']; }
